@@ -24,11 +24,7 @@ import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 
 import java.io.IOException;
-import java.net.ConnectException;
-import java.net.InetSocketAddress;
-import java.net.NoRouteToHostException;
-import java.net.SocketAddress;
-import java.net.SocketException;
+import java.net.*;
 import java.nio.channels.ClosedChannelException;
 import java.nio.channels.NotYetConnectedException;
 import java.util.concurrent.Executor;
@@ -511,14 +507,17 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
 
                 // Ensure we call handlerAdded(...) before we actually notify the promise. This is needed as the
                 // user may already fire events through the pipeline in the ChannelFutureListener.
-//                pipeline 中 ChannelInitializer 实例的 handlerAdded 方法
+//                pipeline 中 ChannelInitializer 实例的 handlerAdded 方法 ???
+//               ServerBootstrap.handler()
+//               触发handlerAdded
                 pipeline.invokeHandlerAddedIfNeeded();
 
                 safeSetSuccess(promise);
-                // 传播事件
+                // 传播事件  触发ChannelRegistered
                 pipeline.fireChannelRegistered();
                 // Only fire a channelActive if the channel has never been registered. This prevents firing
                 // multiple channel actives if the channel is deregistered and re-registered.
+                // isActive() 返回false 会在绑定过程触发
                 if (isActive()) {
                     if (firstRegistration) {
                         // // 传播事件
@@ -574,7 +573,7 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
                 invokeLater(new Runnable() {
                     @Override
                     public void run() {
-                         // 传播 事件
+                         // 传播 事件  在这里触发ChannelActive
                         pipeline.fireChannelActive();
                     }
                 });
