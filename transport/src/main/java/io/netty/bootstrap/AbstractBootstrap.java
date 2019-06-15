@@ -278,6 +278,7 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
     }
 
     private ChannelFuture doBind(final SocketAddress localAddress) {
+        // 创建服务端chnnel
         final ChannelFuture regFuture = initAndRegister();
         final Channel channel = regFuture.channel();
         if (regFuture.cause() != null) {
@@ -317,7 +318,10 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
     final ChannelFuture initAndRegister() {
         Channel channel = null;
         try {
+            // 创建channel 在当前类 AbstractBootstrap.channel中用new ReflectiveChannelFactory(channelClass)反射创建
+            // channelClass 为ServerBootstrap.channel传入
             channel = channelFactory.newChannel();
+            // 初始化服务端channel
             init(channel);
         } catch (Throwable t) {
             if (channel != null) {

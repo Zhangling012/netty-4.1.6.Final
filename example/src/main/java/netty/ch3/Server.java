@@ -15,8 +15,18 @@ import netty.ch6.AuthHandler;
  * @author
  */
 public final class Server {
+    // 服务端的socket在哪里初始化？
+    // 在哪里accept连接？
 
     public static void main(String[] args) throws Exception {
+        // 服务启动过程：
+        // 创建服务端chnnel
+        // 初始化服务端chnnel
+        // 注册selector
+        // 端口绑定
+
+
+
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {

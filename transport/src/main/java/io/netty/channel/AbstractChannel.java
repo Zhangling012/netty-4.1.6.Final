@@ -73,11 +73,15 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
      *
      * @param parent
      *        the parent of this channel. {@code null} if there's no parent.
+     *        客户端服务端channel都由此
      */
     protected AbstractChannel(Channel parent) {
         this.parent = parent;
+        // channel 唯一标识
         id = newId();
+        // TCP相关读写
         unsafe = newUnsafe();
+        // 逻辑链
         pipeline = newChannelPipeline();
     }
 
@@ -507,6 +511,7 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
 
                 // Ensure we call handlerAdded(...) before we actually notify the promise. This is needed as the
                 // user may already fire events through the pipeline in the ChannelFutureListener.
+//                pipeline 中 ChannelInitializer 实例的 handlerAdded 方法
                 pipeline.invokeHandlerAddedIfNeeded();
 
                 safeSetSuccess(promise);

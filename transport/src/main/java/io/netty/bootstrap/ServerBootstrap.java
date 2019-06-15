@@ -139,12 +139,12 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
 
     @Override
     void init(Channel channel) throws Exception {
-        // 将用户自定义options 设置进config
+        // 将用户自定义options 设置进config ServerSocketChannelConfig
         final Map<ChannelOption<?>, Object> options = options0();
         synchronized (options) {
             channel.config().setOptions(options);
         }
-        // 将用户自定义attrs 设置进config
+        // 将用户自定义attrs
         final Map<AttributeKey<?>, Object> attrs = attrs0();
         synchronized (attrs) {
             for (Entry<AttributeKey<?>, Object> e: attrs.entrySet()) {
@@ -153,7 +153,7 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
                 channel.attr(key).set(e.getValue());
             }
         }
-
+        //
         ChannelPipeline p = channel.pipeline();
 
         final EventLoopGroup currentChildGroup = childGroup;
@@ -173,6 +173,7 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
             @Override
             public void initChannel(Channel ch) throws Exception {
                 final ChannelPipeline pipeline = ch.pipeline();
+                // 用户自定义handler添加   bootstrap.handler()
                 ChannelHandler handler = config.handler();
                 if (handler != null) {
                     pipeline.addLast(handler);
@@ -185,7 +186,9 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
                 ch.eventLoop().execute(new Runnable() {
                     @Override
                     public void run() {
-                        // 添加连接器  将用户自定义属性传进去
+                        // 添加连接器  将用户自定义属性传进去  新连接接入
+                        // currentChildHandler就是用户自定义ServerBootStrap.childHandler()
+                        // currentChildGroup  ServerBootstrap.group(EventLoopGroup parentGroup, EventLoopGroup childGroup)
                         pipeline.addLast(new ServerBootstrapAcceptor(
                                 currentChildGroup, currentChildHandler, currentChildOptions, currentChildAttrs));
                     }
