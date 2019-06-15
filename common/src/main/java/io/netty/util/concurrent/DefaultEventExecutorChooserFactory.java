@@ -33,9 +33,12 @@ public final class DefaultEventExecutorChooserFactory implements EventExecutorCh
     @Override
     public EventExecutorChooser newChooser(EventExecutor[] executors) {
         // & 是直接计算 取模需要调底层库
+        // 是否是2的幂
         if (isPowerOfTwo(executors.length)) {
+            // 优化  index++ & (length-1)
             return new PowerOfTowEventExecutorChooser(executors);
         } else {
+            // 普通 ads(index++ % length)
             return new GenericEventExecutorChooser(executors);
         }
     }

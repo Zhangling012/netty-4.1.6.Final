@@ -175,6 +175,7 @@ public abstract class SingleThreadEventExecutor extends AbstractScheduledEventEx
         super(parent);
         this.addTaskWakesUp = addTaskWakesUp;
         this.maxPendingTasks = Math.max(16, maxPendingTasks);
+        // 保存线程执行器 后面创建nioeventloop 底层线程用
         this.executor = ObjectUtil.checkNotNull(executor, "executor");
         // 普通任务队列创建
         taskQueue = newTaskQueue(this.maxPendingTasks);

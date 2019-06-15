@@ -48,6 +48,7 @@ public abstract class MultithreadEventLoopGroup extends MultithreadEventExecutor
      * @see {@link MultithreadEventExecutorGroup#MultithreadEventExecutorGroup(int, Executor, Object...)}
      */
     protected MultithreadEventLoopGroup(int nThreads, Executor executor, Object... args) {
+        //  线程默认  cpu*2
         super(nThreads == 0 ? DEFAULT_EVENT_LOOP_THREADS : nThreads, executor, args);
     }
 

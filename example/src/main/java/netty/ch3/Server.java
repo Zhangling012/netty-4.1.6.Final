@@ -19,13 +19,16 @@ public final class Server {
     // 在哪里accept连接？
 
     public static void main(String[] args) throws Exception {
-        // 服务启动过程：
+        // 服务启动过程　：
         // 创建服务端chnnel
         // 初始化服务端chnnel
         // 注册selector
         // 端口绑定
 
-
+        // 关于NioEventLoopGroup
+        // 默认情况下 netty 服务端起多少个线程？何时启动？
+        //　如何解决jdk 空轮训bug
+        //　如何保证异步串行无锁化
 
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
         EventLoopGroup workerGroup = new NioEventLoopGroup();
