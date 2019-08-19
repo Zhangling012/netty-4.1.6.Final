@@ -361,6 +361,8 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
 
         // This method is invoked before channelRegistered() is triggered.  Give user handlers a chance to set up
         // the pipeline in its channelRegistered() implementation.
+        // 通过register 绑定上来的eventLoop()
+//        SingleThreadEventExecutor.execute()
         channel.eventLoop().execute(new Runnable() {
             @Override
             public void run() {

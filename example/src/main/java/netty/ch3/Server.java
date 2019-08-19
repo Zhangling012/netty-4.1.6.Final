@@ -38,7 +38,9 @@ public final class Server {
                     .channel(NioServerSocketChannel.class)
                     .childOption(ChannelOption.TCP_NODELAY, true)
                     .childAttr(AttributeKey.newInstance("childAttr"), "childAttrValue")
+                    // 在初始化时就会执行 监听Channel的各种动作以及状态的改变，包括连接，绑定，接收消息等  给bossgroup 用
                     .handler(new ServerHandler())
+                    // 在客户端成功connect后才执行 用来监听已经连接的客户端的Channel的动作和状态  给 workgroup 用
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         public void initChannel(SocketChannel ch) {
